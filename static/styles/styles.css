@@ -9,7 +9,7 @@
 }
 
 body{
-	background: url('{{ url_for('static',filename='https://i.imgur.com/NMnbn2s.jpg') }}') no-repeat center;
+	background:  no-repeat center;
 	background-size: cover;
 	width: 100%;
 	height: 100vh;
@@ -38,8 +38,8 @@ body{
 }
 
 .searchbtn {
-    background: #ffec00;
-    width: 10%;
+    background: #047daa;
+    width: 40%;
     border-radius: 5px;
     position: relative;
     cursor: pointer;
