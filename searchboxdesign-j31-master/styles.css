@@ -9,7 +9,7 @@
 }
 
 body{
-	background: url('https://i.imgur.com/NMnbn2s.jpg') no-repeat center;
+	background: url("CuteAmbulance.jpg") no-repeat center;
 	background-size: cover;
 	width: 100%;
 	height: 100vh;
@@ -20,7 +20,7 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     max-width: 550px;
     width: 100%;
     padding: 15px;
@@ -37,18 +37,14 @@ body{
     font-weight: bold;
 }
 
-.searchbtn {
-    background: #ffec00;
-    width: 10%;
-    border-radius: 5px;
-    position: relative;
+.btn {
+    border: none;
+    background-color: inherit;
+    padding: 14px 28px;
+    font-size: 16px;
     cursor: pointer;
-}
+    display: inline-block;
+  }
+  .btn:hover {background: #eee;}
 
-.searchbtn .fas{
-	position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-}
+.success {color: green;}
