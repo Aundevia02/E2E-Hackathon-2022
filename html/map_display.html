@@ -42,20 +42,56 @@
         startImage.src = '../static/styles/mapstyle.css/Bear.jpg';
         let directionsService;
         let directionsDisplay;
+        var userid = "{{userid}}"
+        var cur_lat = {{code_info.lat}}
+        var cur_lng = {{code_info.lng}}
 
-        getLocation();
+        let INTERVAL_TIMER = true
+        if (INTERVAL_TIMER) {
+        setInterval(updateLoc, 1000);
+        }
 
-        function getLocation() {
+        function SetMarker(lat, lng) {
+          //Remove previous Marker.
+          if (marker != null) {
+              marker.setMap(null);
+          }
+          
+          var myLatlng = new google.maps.LatLng(lat, lng);
+          marker = new google.maps.Marker({
+              position: myLatlng,
+              map: map,
+              title: data.title
+          });
+  
+          //Create and open InfoWindow.
+          var infoWindow = new google.maps.InfoWindow();
+          infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + data.description + "</div>");
+          infoWindow.open(map, marker);
+        };
+
+        window.onload = function (){
+          let destination = new google.maps.LatLng(cur_lat, cur_lng);
+          //destination = "Bangs Ambulance Operations, New York 79, Ithaca, NY";
+          getLocation(destination);
+        };
+        function getLocation(dest) {
 
             navigator.geolocation.getCurrentPosition(function(position) {
                 //directionsInfo.innerHTML = `The button has been pressed`
                 directionsInfo.innerHTML = `Your coordinates: (${position.coords.latitude}, ${position.coords.longitude})`;
                 var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                initMap(pos);
+                initMap(pos, dest);
             });
         }
+        
+        function updateLoc() {
+          
 
-        function initMap(location) {
+        }
+        
+
+        function initMap(location, destination) {
 
             // Instantiate a directions service.
             directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
@@ -78,10 +114,7 @@
             directionsService = new google.maps.DirectionsService();
 
             directionsDisplay.setMap(directionsMap);
-            let destination = new google.maps.LatLng(47.6795273, -70.8697928);
-            //18.211685, -67.141684
-            destination = new google.maps.LatLng(18.211685, -67.141684);
-            destination = "Fuertes Observatory, Ithaca, NY 14850";
+
 
             calcRoute(location, destination);
 
@@ -134,23 +167,8 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8&callback=myMap"></script>
 
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOKsQNZ3FsAta_dB9UhkrUv93M9_Xc3jA" async defer></script> -->
-    <!-- 
+
 
 </body>
 
 </html> 
-
-<!DOCTYPE html>
-<html>
-  <head>
-    {{"decoupled-map"|googlemap_js(37.4419, -122.1419, markers=[(37.4419,
-    -122.1419)])}} {{mymap.js}} {{sndmap.js}}
-  </head>
-  <body>
-    <h1>User: {{userid}}</h1>
-
-    <h2>Second map generated in view</h2>
-    <h3>Example for different icons in multiple markers with infoboxes</h3>
-    {{sndmap.html}}
-  </body>
-</html> -->

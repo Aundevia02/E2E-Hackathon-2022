@@ -2,7 +2,7 @@ from flask import Flask, flash, render_template, request, redirect, url_for
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 import csv
-from test import to_csv
+
 
 app = Flask(__name__, template_folder="html")
 
@@ -11,7 +11,7 @@ class CodeInfo:
     def __init__(self, code, lat, lng, type_emer):
         self.code = code
         self.lat = lat
-        self.long = lng
+        self.lng = lng
         self.type = type_emer
 
     def get_code(self):
@@ -37,16 +37,19 @@ def to_csv(name):
 
     with open(name, mode='r') as inp:
         reader = csv.reader(inp)
-        dict_from_csv = {rows[0]: CodeInfo(rows[0], rows[1], rows[2], rows[3])
-                         for rows in reader}
+        dict_from_csv = {}
+        for rows in reader:
+            dict_from_csv[rows[0]] = CodeInfo(rows[0], rows[1], rows[2], rows[3])
+
 
     return dict_from_csv
 
 
 code_dict = to_csv('codes.csv')
 
-GoogleMaps(app, key="AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8")
 
+
+GoogleMaps(app, key="AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8")
 
 @app.route("/landing")
 @app.route("/")
@@ -75,33 +78,8 @@ def mapview(uid):
     u_code_info = code_dict.get(uid)
 
     # creating a map in the view
-    mymap = Map(
-        identifier="view-side",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=[(37.4419, -122.1419)]
-    )
-    sndmap = Map(
-        identifier="sndmap",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=[
-            {
-                'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                'lat': 37.4419,
-                'lng': -122.1419,
-                'infobox': "<b>Hello World</b>"
-            },
-            {
-                'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                'lat': 37.4300,
-                'lng': -122.1400,
-                'infobox': "<b>Hello World from other place</b>"
-            }
-        ]
-    )
     # print(id)
-    return render_template('map_display.html', mymap=mymap, sndmap=sndmap, userid=u_code_info.code, code_info=u_code_info)
+    return render_template('map_display.html', userid=u_code_info.code, code_info=u_code_info)
 
 
 if __name__ == "__main__":
