@@ -10,13 +10,18 @@
 <body>
 
 	
+<script>
+	
 
+</script>
 
 <div class="wrapper">
-	<input type="text" class="input" id="codeInput"
-	placeholder="What are you looking for?">
 	
-	<dev type="button" class="searchbtn" onclick="location.href='{{ url_for('mapview', id="12355")}}';"><i class="fas fa-search"></i></div>
+	<form action="{{ url_for('mapredir', id="feabrea")}}" method="POST">
+	<input type="text" class="input" name="userid"
+	placeholder="What are you looking for?"><
+	<input type="submit" class="searchbtn" value="submit"><i class="fas fa-search"></i></div></div>
+</form>
 </div>
 
 </body>

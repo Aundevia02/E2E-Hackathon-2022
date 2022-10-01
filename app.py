@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
@@ -11,8 +11,15 @@ GoogleMaps(app, key="AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8")
 def searchid():
     return render_template("landing_page.html")
 
+@app.route("/map",methods = ['POST'])
+def mapredir():
+    # validate input data
+    userid = request.form['userid']
+    # validate(id)
+    # getData(id)
+    return redirect(url_for('mapview', id=userid))
+
 @app.route("/map/<id>")
-@app.route("/map")
 def mapview(id):
     # creating a map in the view
     mymap = Map(
@@ -40,7 +47,8 @@ def mapview(id):
           }
         ]
     )
-    return render_template('map_display.html', mymap=mymap, sndmap=sndmap)
+    print(id)
+    return render_template('map_display.html', userid=id, mymap=mymap, sndmap=sndmap)
 
 if __name__ == "__main__":
     app.run(debug=True)
