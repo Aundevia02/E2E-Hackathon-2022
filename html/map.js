@@ -11,7 +11,8 @@ let directionsDisplay;
 function getLocation() {
 
     navigator.geolocation.getCurrentPosition(function(position) {
-        directionsInfo.innerHTML = `Your coordinates: (${position.coords.latitude}, ${position.coords.longitude})`;
+        directionsInfo.innerHTML = `The button has been pressed`
+            //directionsInfo.innerHTML = `Your coordinates: (${position.coords.latitude}, ${position.coords.longitude})`;
         var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         initMap(pos);
     });
@@ -28,7 +29,7 @@ function initMap(location) {
     //GR added this 2022-06 to suppress A & B markers.
     var rendererOptions = {
         map: directionsMap,
-        draggable: true,
+        draggable: false,
         suppressMarkers: true
     }
     directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
@@ -76,6 +77,8 @@ function calcRoute(start, destination) {
                 map: directionsMap,
                 label: 'Ambulance'
             });
+        } else {
+            alert("Directions no found:" + status)
         }
 
     })
