@@ -17,11 +17,10 @@
 
 <div class="wrapper">
 	
-	<form action="{{ url_for('mapredir', id="feabrea")}}" method="POST">
-	<input type="text" class="input" name="userid"
-	placeholder="What are you looking for?"><
-	<input type="submit" class="searchbtn" value="submit"><i class="fas fa-search"></i></div></div>
-</form>
+	<form  action="{{ url_for('mapredir')}}" method="POST">
+		<input type="text" class="input" name="userid" placeholder="Enter code here">
+		<input class="searchbtn fa fa-search" type="submit"> <i class="fa fa-search"></i></input>
+	</form>
 </div>
 
 </body>
