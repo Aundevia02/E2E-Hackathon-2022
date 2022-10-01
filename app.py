@@ -47,7 +47,6 @@ def mapview(id):
           }
         ]
     )
-    print(id)
     return render_template('map_display.html', userid=id, mymap=mymap, sndmap=sndmap)
 
 if __name__ == "__main__":
