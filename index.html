@@ -5,26 +5,62 @@
 
     <h1>My First Google Map</h1>
 
-    <div id="googleMap" style="width:100%;height:400px;"></div>
+    <div id="googleMap" style="width:100%;height:500px;"></div>
 
     <script>
-        var x = 42.444715079955856;
-        var y = -76.48234894254027;
+        function getLocation() {
+
+        }
 
         function myMap() {
+            //navigator.geoLocation.getCurrentPosition(function(position) {
+            //  var place = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            //});
+
+            var place = new google.maps.LatLng(42.45289295276059, -76.47447707327028);
             var mapProp = {
-                center: new google.maps.LatLng(x, y),
-                zoom: 16,
+                center: place,
+                zoom: 15,
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
-            var myCenter = new google.maps.LatLng(x, y);
             var marker = new google.maps.Marker({
-                position: myCenter
+                position: place,
             });
+
             marker.setMap(map);
 
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            var directionsService = new google.maps.DirectionsService();
+            var start = new google.maps.LatLng(42.45289295276059, -76.47447707327028);
+            var end = new google.maps.LatLng(18.211685, -67.141684);
+            end = "Fuertes Observatory, Ithaca, NY 14850";
+            start = "Duffield Hall, 343 Campus Rd, Ithaca, NY 14853"
+
+            var request = {
+                origin: start,
+                destination: end,
+                travelMode: google.maps.TravelMode.WALKING
+            };
+            directionsService.route(request, function(result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                    alert("we got directions i think?" + status);
+                } else {
+                    alert("couldn't get directions:" + status);
+                }
+            });
         }
+
+        function Route() {
+
+        }
+        myMap();
+        Route();
+
+
+
+        //google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8&callback=myMap"></script>
