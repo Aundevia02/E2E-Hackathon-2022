@@ -1,4 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Comfortaa');
+<<<<<<< HEAD
+
+body {
+    background-image: url("CuteAmbulance.jpg");
+  }
+  form {
+    width: 300px;
+    margin: auto;
+    margin-top: 50px;
+  }
+  input {
+    padding: 4px 10px;
+    border: 0;
+    font-size: 16px;
+  }
+  .search {
+    width: 75%;
+  }
+  .submit {
+    width: 70px;
+    background-color: #1c87c9;
+    color: #ffffff;
+  }
+=======
 * {
     margin: 0;
     padding: 0;
@@ -52,3 +76,4 @@ body {
     transform: translate(-50%, -50%);
     font-size: 18px;
 }
+>>>>>>> bdfd4fb77c85a70e4b3bb36de637ea83db353b7a
