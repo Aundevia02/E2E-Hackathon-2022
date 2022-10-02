@@ -12,16 +12,28 @@
     <header>
         <h1>ATrack</h1>
     </header>
-    <article id="scroll-info">
-
-    </article>
 
     <section id="directions">
 
-        <p id="directions-info"></p>
-        <p id="travel-time"></p>
+        <center>
+            <p id="travel-time"></p>
+            <p id="directions-info"></p>
+
+        </center>
 
         <article id="directions-map">map should appear here</article>
+        <p></p>
+
+        <div id="what">
+            <center>
+                <h1 id="what_title"> What to do?</h1>
+                <p id="med-info"> </p>
+                <p id="med-src"></p>
+            </center>
+        </div>
+
+
+        <!-- <img src="../static/styles/Bear.png" alt="alternatetext"> -->
 
     </section>
 
@@ -32,18 +44,219 @@
     </footer>
 
     <script>
-        console.info('spa_directions.js loaded');
-
-        /* code for simple map */
+        console.log("at least i considered the script")
+            /* code for simple map */
         const directionsInfo = document.querySelector('#directions-info');
         const directionsButton = document.querySelector('#get-directions');
         const travelTime = document.querySelector('#travel-time');
         const startImage = new Image(100, 100);
-        startImage.src = '../static/styles/mapstyle.css/Bear.jpg';
+        startImage.src = '../static/styles/Bear.png';
         let directionsService;
         let directionsDisplay;
 
+        med_problems = {
+
+            "Heart Attack": [`<ul>
+  <li>Chew and swallow an aspirin while waiting for emergency help. Aspirin helps keep your blood from clotting. When taken during a heart attack, it could reduce heart damage. Don't take aspirin if you are allergic to it or have been told by your health care provider never to take aspirin.</li>
+  <li>Take nitroglycerin, if prescribed. If you think you're having a heart attack and your health care provider has previously prescribed nitroglycerin for you, take it as directed while waiting for emergency medical help.</li>
+  <li>Begin CPR if the person is unconscious. If the person isn't breathing or you don't find a pulse, begin CPR to keep blood flowing after you call for emergency medical help.
+
+Push hard and fast on the center of the person's chest in a fairly rapid rhythm — about 100 to 120 compressions a minute.</li>
+<li>If an automated external defibrillator (AED) is immediately available and the person is unconscious, follow the device instructions for using it.</li>
+</ul>`, "Mayo Clinic"],
+
+            "Choking": [`<ul>
+  <li>If someone is choking, encourage them to cough.</li>
+  <li>Bend them forwards and give up to 5 back blows to try and dislodge the blockage.</li>
+  <li>If they are still choking, give up to 5 abdominal thrusts: hold around the waist and pull inwards and upwards above their belly button.</li>
+</ul>`, "Red Cross"],
+
+            "Seizure": [`<ul>
+  <li>Stay with the person until the seizure ends and he or she is fully awake. After it ends, help the person sit in a safe place. Once they are alert and able to communicate, tell them what happened in very simple terms.</li>
+  <li>Keep yourself and other people calm.</li>
+  <li>Check to see if the person is wearing a medical bracelet or other emergency information..</li>
+</ul>`, "CDC"],
+
+            "Anaphylaxis": [`<ul>
+  <li>Ask if the person is carrying an epinephrine autoinjector (EpiPen, Auvi-Q, others) to treat an allergic attack.</li>
+  <li>If the person needs to use an autoinjector, ask whether you should help inject the medication. This is usually done by pressing the autoinjector against the person's thigh.</li>
+  <li>Have the person lie face up and be still.</li>
+<li>Loosen tight clothing and cover the person with a blanket. Don't give the person anything to drink.</li>
+<li>If there's vomiting or bleeding from the mouth, turn the person to the side to prevent choking.</li>
+<li>If there are no signs of breathing, coughing or movement, begin CPR. Do uninterrupted chest presses — about 100 every minute — until paramedics arrive.</li>
+</ul>`, "Mayo Clinic"],
+            "Panic Attack": [`<ul>
+  <li>Stay calm. Don’t let the situation overrun you. Your low-key behavior can be a model for your friend and let them know everything's OK.</li>
+  <li>Stick around. The best thing you can do to help with a panic attack is to stay and help your friend ride it out. Most panic attacks ease up in 20 to 30 minutes.</li>
+  <li>Do your best to be understanding, positive, and encouraging. Ask what the cause of your friend's panic is. That can let them take a step back and think about the situation more rationally.</li>
+</ul>`, "Web MD"],
+
+            "Fainting": [`<ul>
+  <li>Check alertness: Ask things to determine level of orientation. If they become unresponsive, check for pulse, check to see if they're breathing. </li>
+  <li>Listen for breathing through the nose, watch the chest for rise and fall. Take a pulse, either at the wrist or neck. If they are breathing and have a pulse, you should stay with them to offer support. </li>
+  <li>Start CPR: If the patient isn't breathing and does not have a pulse, start CPR.</li>
+<li>Make the patient comfortable: "If this person has been out in the heat, move them to a shady spot. If they're sweating, pour water over their skin," </li>
+</ul>`, "WebMD"],
+
+            "Bleeding": [`<ul>
+  <li>Apply direct pressure on the cut or wound with a clean cloth, tissue, or piece of gauze until bleeding stops. If blood soaks through the material, don’t remove it. Put more cloth or gauze on top of it and continue to apply pressure.
+</li>
+  <li>If the wound is on the arm or leg, raise limb above the heart, if possible, to help slow bleeding.
+Wash your hands again after giving first aid and before cleaning and dressing the wound.
+Do not apply a tourniquet unless the bleeding is severe and not stopped with direct pressure.
+ </li>
+  <li>Gently clean with soap and warm water. Try to rinse soap out of wound to prevent irritation.
+Don’t use hydrogen peroxide or iodine, which can damage tissue.
+</li>
+</ul>`, "WebMD"],
+
+            "Burns": [`<ul>
+  <li>Step away from the source of the burn.</li>
+  <li>Gently flush the area with cool water to reduce the temperature. Never use ice </li>
+  <li>Remove clothing from the wound unless it's sticking; in that case, leave it for medical professionals to remove. Take off any jewelry before the area can swell. </li>
+<li>Cover the burn with a clean cloth or a gauze pad if you have it.</li>
+<li>Do not use any greases, sprays, butter, or ointments on a burn, as they keep the heat in.</li>
+
+</ul>`, "verywellhealth"],
+
+            "Accidental Amputation": [`<ul>
+  <li>Have the injured person lie down, if possible, and elevate the injured area.
+</li>
+  <li>If the wound is on the arm or leg, raise limb above the heart, if possible, to help slow bleeding.
+</li>
+<li>
+If blood soaks through, apply another covering over the first one. Don’t take the first one off.
+Use a tourniquet or compression bandage only if bleeding is severe and not stopped with direct pressure. Wrap or cover the injured area with sterile dressing or clean cloth.
+ </li>
+  <li>Cover with coat or blanket.
+Calm the person as much as possible until medical help arrives. 
+</li>
+<li>In some cases, the amputated part can be reattached.If possible, rinse with clean water to remove dirt or debris. Do not use soap or scrub.
+Place in a clean, plastic bag.
+Pack the bag in ice. Take it with you to the hospital.
+</li>
+</ul>`, "WebMD"],
+
+
+            "Sprains": [`<ul>
+  <li>make sure that the injured person stops any unnecessary activity, as moving can make the injury worse.</li>
+  <li>Keep the limb as still as possible and avoid a cold pack</li>
+  <li>Elevate the injured part if you can do so safely and use NSAIDs for pain.</li>
+<li>Ask your provider about any other treatment for a sprain you might need.</li>
+
+</ul>`, "verywellhealth"],
+
+
+            "Drug Overdose": [`<ul>
+  <li>Begin CPR, if Necessary. If the person is not breathing or breathing is dangerously weak. Do uninterrupted chest presses — about 100 every minute — until paramedics arrive.</li>
+  <li>Call Poison Control at 800-222-1222 (in U.S.) even if the person has no symptoms. Poison Control experts will advise you how to proceed. Do not try to make the person vomit or give the person anything to eat or drink.
+ </li>
+  <li>Give drug or pills the person may have taken to the emergency team, or take them to the emergency room or doctor's office. </li>
+<li>At the hospital, the person's stomach may be pumped. Activated charcoal may be given by mouth to absorb the drug.
+</li>
+</ul>`, "Web MD"]
+
+
+        }
+
         getLocation();
+
+        var keys = Object.keys(med_problems)
+
+        problem = keys[Math.floor(Math.random() * keys.length)];
+        document.getElementById('what_title').innerHTML = "What To Do? (" + problem + ")";
+        document.getElementById('med-info').innerHTML = med_problems[problem][0];
+        document.getElementById('med-src').innerHTML = "~ " + med_problems[problem][1];
+
+        input_text = './med_problems.json';
+
+        //loadTxt(input_text);
+        //console.log("I made it this far");
+        //console.log(fetch(input_text).then(response => response.json()));
+
+
+
+        // function loadTxt(input_text) {
+        //     fetch(input_text)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data.choke)
+        //             document.getElementById('med-info').innerHTML = data.choke
+        //         });
+        // }
+
+
+        //getMedInfo("choke.txt")
+
+        // var input_text = "choke.txt";
+        // loadTxt(input_text);
+
+        // function loadTxt(input_text) {
+        //     fetch(input_text)
+        //         .then(function(response) {
+        //             console.log(response);
+        //             return response.text();
+        //         }).then(function(data) {
+        //             console.log(data.toString());
+        //             document.getElementById('med-info').innerHTML = data.toString();
+        //         }).catch(function(error) {
+        //             console.log(error);
+        //         });
+        // }
+
+
+        //import fs from 'fs';
+
+
+        // const load = async(url) => {
+        //     try {
+        //         const response = await fetch(url);
+        //         const data = await response.text();
+        //         console.log(response);
+        //     } catch (err) {
+        //         console.error(err);
+        //         return null;
+        //     }
+        // };
+
+        // var output = load("choke.txt");
+        // document.getElementById('med-info').textContent = output;
+
+
+
+
+        // var fr = new FileReader();
+        // var test = fr.readAsText(input_text);
+        // console.log(test);
+        // const fs = require(`fs`);
+
+        // fs.readFile(input_text, (err, data) => {
+        //     if (err) throw err;
+
+        //     console.log(data.toString());
+        //     document.getElementById('med-info').textContent = data.toString();
+        // })
+
+        // function getMedInfo(inputfile) {
+
+        //     const contents = readFileSync(inputfile, 'utf-8');
+
+        //     const arr = contents.split(/\r?\n/);
+
+        //     console.log(arr);
+
+        //     document.getElementById(inputfi)
+        //         .addEventListener('change', function() {
+
+        //             var fr = new FileReader();
+        //             fr.onload = function() {
+        //                 document.getElementById('med-info')
+        //                     .textContent = fr.result;
+        //             }
+
+        //             fr.readAsText(this.files[0]);
+        //         })
+        // }
 
         function getLocation() {
 
@@ -54,6 +267,8 @@
                 initMap(pos);
             });
         }
+
+
 
         function initMap(location) {
 
@@ -80,10 +295,11 @@
             directionsDisplay.setMap(directionsMap);
             let destination = new google.maps.LatLng(47.6795273, -70.8697928);
             //18.211685, -67.141684
-            destination = new google.maps.LatLng(18.211685, -67.141684);
-            destination = "Fuertes Observatory, Ithaca, NY 14850";
+            destination = new google.maps.LatLng(42.45280983381749, -76.47449853078506);
+            //destination = "Fuertes Observatory, Ithaca, NY 14850";
 
             calcRoute(location, destination);
+
 
         }
 
@@ -98,6 +314,8 @@
                 if (status == 'OK') {
                     directionsDisplay.setDirections(response);
                     var point = response.routes[0].legs[0];
+                    //var today = new Date();
+                    //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                     //$( '#travel_data' ).html( 'Estimated travel time: ' + point.duration.text + ' (' + point.distance.text + ')' );
                     //travelTime.innerHTML = "\t Estimated Travel Time: " + point.duration.text + "\t Distance: " + point.distance.text;
                     //directionsInfo.innerHTML += "\t Estimated Travel Time: " + point.duration.text + "\t Distance: " + point.distance.text;
@@ -116,7 +334,7 @@
                         position: destination,
                         map: directionsMap,
                         label: {
-                            text: 'Amb',
+                            text: 'A',
                             color: "#f3f3f3",
                             fontSize: "14px",
                             fontWeight: "bold"
