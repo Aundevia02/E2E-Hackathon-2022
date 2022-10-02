@@ -150,7 +150,7 @@
 
         function initMap(location, destination) {
 
-            // Instantiate a directions service.
+            
             directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
             directionsMap = new google.maps.Map(document.querySelector('#directions-map'), {
                 center: location,
@@ -169,7 +169,7 @@
                         }
                     });
                     
-            //GR added this 2022-06 to suppress A & B markers.
+            
             var rendererOptions = {
                 map: directionsMap,
                 //draggable: true,
@@ -177,7 +177,7 @@
 
             }
             directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-            //end of stuff added
+            
 
             directionsService = new google.maps.DirectionsService();
 
