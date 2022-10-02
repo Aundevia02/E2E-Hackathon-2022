@@ -43,13 +43,64 @@
         let directionsService;
         let directionsDisplay;
         var userid = "{{userid}}"
-        var cur_lat = {{code_info.lat}}
-        var cur_lng = {{code_info.lng}}
+        var lats = [42.43898878,
+                    42.43839994,
+                    42.4397739,
+                    42.44028913,
+                    42.44043633,
+                    42.4404854,
+                    42.44054865,
+                    42.44053282,
+                    42.4406595,
+                    42.44265471,
+                    42.44411149,
+                    42.44590075,
+                    42.44556824,
+                    42.44515655]
+        var lngs = [-76.50160623,
+                    -76.50107431,
+                    -76.50173922,
+                    -76.50137352,
+                    -76.5003429,
+                    -76.49884686,
+                    -76.49453227,
+                    -76.49270837,
+                    -76.49002616,
+                    -76.48981158,
+                    -76.4894468,
+                    -76.48785894,
+                    -76.48614232,
+                    -76.48273055]
+        var types = "{{types}}"
+        var counter = 0
 
+        var cur_lat = lats[counter]
+        var cur_lng = lngs[counter]
+        counter += 1
         let INTERVAL_TIMER = true
-        if (INTERVAL_TIMER) {
-        setInterval(updateLoc, 1000);
+        
+        function updateLoc() {
+          var new_lat = lats[counter]
+          var new_lng = lngs[counter]
+
+          if (counter < lats.length) {
+            counter += 1
+          }
+          else {
+            clearInterval(interval)
+          }
+
+          SetMarker(new_lat, new_lng)
         }
+
+        var map;
+        var marker;
+        var my_pos;
+        
+        if (INTERVAL_TIMER) {
+        const interval = setInterval(updateLoc, 2000);
+      }
+  
 
         function SetMarker(lat, lng) {
           //Remove previous Marker.
@@ -61,13 +112,21 @@
           marker = new google.maps.Marker({
               position: myLatlng,
               map: map,
-              title: data.title
+              title: "ambulance",
+              label: {
+                            text: 'Amb',
+                            color: "#f3f3f3",
+                            fontSize: "14px",
+                            fontWeight: "bold"
+                        }
           });
-  
+          marker.setMap(map)
+          let destination = new google.maps.LatLng(lat, lng);
+          
+          calcRoute(my_pos, destination);
+          
           //Create and open InfoWindow.
-          var infoWindow = new google.maps.InfoWindow();
-          infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + data.description + "</div>");
-          infoWindow.open(map, marker);
+
         };
 
         window.onload = function (){
@@ -75,20 +134,18 @@
           //destination = "Bangs Ambulance Operations, New York 79, Ithaca, NY";
           getLocation(destination);
         };
+
         function getLocation(dest) {
 
             navigator.geolocation.getCurrentPosition(function(position) {
                 //directionsInfo.innerHTML = `The button has been pressed`
                 directionsInfo.innerHTML = `Your coordinates: (${position.coords.latitude}, ${position.coords.longitude})`;
                 var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                my_pos=pos
                 initMap(pos, dest);
             });
         }
         
-        function updateLoc() {
-          
-
-        }
         
 
         function initMap(location, destination) {
@@ -101,6 +158,17 @@
                 zoom: 16,
                 icon: startImage
             });
+            marker = new google.maps.Marker({
+                        position: destination,
+                        map: directionsMap,
+                        label: {
+                            text: 'Amb',
+                            color: "#f3f3f3",
+                            fontSize: "14px",
+                            fontWeight: "bold"
+                        }
+                    });
+                    
             //GR added this 2022-06 to suppress A & B markers.
             var rendererOptions = {
                 map: directionsMap,
@@ -117,6 +185,7 @@
 
 
             calcRoute(location, destination);
+            map = directionsMap
 
         }
 
@@ -145,26 +214,15 @@
                             fontWeight: "bold"
                         }
                     });
-                    let end = new google.maps.Marker({
-                        position: destination,
-                        map: directionsMap,
-                        label: {
-                            text: 'Amb',
-                            color: "#f3f3f3",
-                            fontSize: "14px",
-                            fontWeight: "bold"
-                        }
-                    });
-                    end.setMap(directionsMap)
-
+                    
                 } else {
-                    alert("Directions no found: " + status)
+                    alert("Directions not found: " + status)
                 }
 
             })
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8&callback=myMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8"></script>
 
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOKsQNZ3FsAta_dB9UhkrUv93M9_Xc3jA" async defer></script> -->
 
