@@ -53,6 +53,17 @@
         startImage.src = '../static/styles/Bear.png';
         let directionsService;
         let directionsDisplay;
+        var userid = "{{userid}}"
+        var cur_lat = {
+            {
+                code_info.lat
+            }
+        }
+        var cur_lng = {
+            {
+                code_info.lng
+            }
+        }
 
         med_problems = {
 
@@ -170,93 +181,6 @@ Pack the bag in ice. Take it with you to the hospital.
 
         input_text = './med_problems.json';
 
-        //loadTxt(input_text);
-        //console.log("I made it this far");
-        //console.log(fetch(input_text).then(response => response.json()));
-
-
-
-        // function loadTxt(input_text) {
-        //     fetch(input_text)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log(data.choke)
-        //             document.getElementById('med-info').innerHTML = data.choke
-        //         });
-        // }
-
-
-        //getMedInfo("choke.txt")
-
-        // var input_text = "choke.txt";
-        // loadTxt(input_text);
-
-        // function loadTxt(input_text) {
-        //     fetch(input_text)
-        //         .then(function(response) {
-        //             console.log(response);
-        //             return response.text();
-        //         }).then(function(data) {
-        //             console.log(data.toString());
-        //             document.getElementById('med-info').innerHTML = data.toString();
-        //         }).catch(function(error) {
-        //             console.log(error);
-        //         });
-        // }
-
-
-        //import fs from 'fs';
-
-
-        // const load = async(url) => {
-        //     try {
-        //         const response = await fetch(url);
-        //         const data = await response.text();
-        //         console.log(response);
-        //     } catch (err) {
-        //         console.error(err);
-        //         return null;
-        //     }
-        // };
-
-        // var output = load("choke.txt");
-        // document.getElementById('med-info').textContent = output;
-
-
-
-
-        // var fr = new FileReader();
-        // var test = fr.readAsText(input_text);
-        // console.log(test);
-        // const fs = require(`fs`);
-
-        // fs.readFile(input_text, (err, data) => {
-        //     if (err) throw err;
-
-        //     console.log(data.toString());
-        //     document.getElementById('med-info').textContent = data.toString();
-        // })
-
-        // function getMedInfo(inputfile) {
-
-        //     const contents = readFileSync(inputfile, 'utf-8');
-
-        //     const arr = contents.split(/\r?\n/);
-
-        //     console.log(arr);
-
-        //     document.getElementById(inputfi)
-        //         .addEventListener('change', function() {
-
-        //             var fr = new FileReader();
-        //             fr.onload = function() {
-        //                 document.getElementById('med-info')
-        //                     .textContent = fr.result;
-        //             }
-
-        //             fr.readAsText(this.files[0]);
-        //         })
-        // }
 
         function getLocation() {
 
@@ -264,111 +188,101 @@ Pack the bag in ice. Take it with you to the hospital.
                 //directionsInfo.innerHTML = `The button has been pressed`
                 directionsInfo.innerHTML = `Your coordinates: (${position.coords.latitude}, ${position.coords.longitude})`;
                 var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                initMap(pos);
+                initMap(pos, dest);
             });
         }
 
+        function updateLoc() {
 
+
+        }
 
         function initMap(location) {
+            function initMap(location, destination) {
 
-            // Instantiate a directions service.
-            directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-            directionsMap = new google.maps.Map(document.querySelector('#directions-map'), {
-                center: location,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                zoom: 16,
-                icon: startImage
-            });
-            //GR added this 2022-06 to suppress A & B markers.
-            var rendererOptions = {
-                map: directionsMap,
-                //draggable: true,
-                suppressMarkers: true
+                // Instantiate a directions service.
+                directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+                directionsMap = new google.maps.Map(document.querySelector('#directions-map'), {
+                    center: location,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    zoom: 16,
+                    icon: startImage
+                });
+                //GR added this 2022-06 to suppress A & B markers.
+                var rendererOptions = {
+                    map: directionsMap,
+                    //draggable: true,
+                    suppressMarkers: true
+
+                }
+                directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+                //end of stuff added
+
+                directionsService = new google.maps.DirectionsService();
+
+                directionsDisplay.setMap(directionsMap);
+
+                let destination = new google.maps.LatLng(47.6795273, -70.8697928);
+                //18.211685, -67.141684
+                destination = new google.maps.LatLng(42.45280983381749, -76.47449853078506);
+                //destination = "Fuertes Observatory, Ithaca, NY 14850";
+
+                calcRoute(location, destination);
+
 
             }
-            directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-            //end of stuff added
 
-            directionsService = new google.maps.DirectionsService();
+            function calcRoute(start, destination) {
+                let request = {
+                    origin: start,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.DRIVING //
+                };
 
-            directionsDisplay.setMap(directionsMap);
-            let destination = new google.maps.LatLng(47.6795273, -70.8697928);
-            //18.211685, -67.141684
-            destination = new google.maps.LatLng(42.45280983381749, -76.47449853078506);
-            //destination = "Fuertes Observatory, Ithaca, NY 14850";
+                directionsService.route(request, function(response, status) {
+                    if (status == 'OK') {
+                        directionsDisplay.setDirections(response);
+                        var point = response.routes[0].legs[0];
+                        //var today = new Date();
+                        //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        //$( '#travel_data' ).html( 'Estimated travel time: ' + point.duration.text + ' (' + point.distance.text + ')' );
+                        //travelTime.innerHTML = "\t Estimated Travel Time: " + point.duration.text + "\t Distance: " + point.distance.text;
+                        //directionsInfo.innerHTML += "\t Estimated Travel Time: " + point.duration.text + "\t Distance: " + point.distance.text;
+                        travelTime.innerHTML = `Estimated Travel Time: ${point.duration.text}, Distance: ${point.distance.text}`;
+                        let starter = new google.maps.Marker({
+                            position: start,
+                            map: directionsMap,
+                            label: {
+                                text: 'You',
+                                color: "#f3f3f3",
+                                fontSize: "14px",
+                                fontWeight: "bold"
+                            }
+                        });
+                        let end = new google.maps.Marker({
+                            position: destination,
+                            map: directionsMap,
+                            label: {
+                                text: 'A',
+                                color: "#f3f3f3",
+                                fontSize: "14px",
+                                fontWeight: "bold"
+                            }
+                        });
+                        end.setMap(directionsMap)
 
-            calcRoute(location, destination);
+                    } else {
+                        alert("Directions no found: " + status)
+                    }
 
-
-        }
-
-        function calcRoute(start, destination) {
-            let request = {
-                origin: start,
-                destination: destination,
-                travelMode: google.maps.TravelMode.DRIVING //
-            };
-
-            directionsService.route(request, function(response, status) {
-                if (status == 'OK') {
-                    directionsDisplay.setDirections(response);
-                    var point = response.routes[0].legs[0];
-                    //var today = new Date();
-                    //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    //$( '#travel_data' ).html( 'Estimated travel time: ' + point.duration.text + ' (' + point.distance.text + ')' );
-                    //travelTime.innerHTML = "\t Estimated Travel Time: " + point.duration.text + "\t Distance: " + point.distance.text;
-                    //directionsInfo.innerHTML += "\t Estimated Travel Time: " + point.duration.text + "\t Distance: " + point.distance.text;
-                    travelTime.innerHTML = `Estimated Travel Time: ${point.duration.text}, Distance: ${point.distance.text}`;
-                    let starter = new google.maps.Marker({
-                        position: start,
-                        map: directionsMap,
-                        label: {
-                            text: 'You',
-                            color: "#f3f3f3",
-                            fontSize: "14px",
-                            fontWeight: "bold"
-                        }
-                    });
-                    let end = new google.maps.Marker({
-                        position: destination,
-                        map: directionsMap,
-                        label: {
-                            text: 'A',
-                            color: "#f3f3f3",
-                            fontSize: "14px",
-                            fontWeight: "bold"
-                        }
-                    });
-                    end.setMap(directionsMap)
-
-                } else {
-                    alert("Directions no found: " + status)
-                }
-
-            })
-        }
+                })
+            }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXc9W874xRGVHWAtpeBcKokoa4VVYeBC8&callback=myMap"></script>
 
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOKsQNZ3FsAta_dB9UhkrUv93M9_Xc3jA" async defer></script> -->
-    <!-- 
+
 
 </body>
 
-</html> 
-
-<!DOCTYPE html>
-<html>
-  <head>
-    {{"decoupled-map"|googlemap_js(37.4419, -122.1419, markers=[(37.4419,
-    -122.1419)])}} {{mymap.js}} {{sndmap.js}}
-  </head>
-  <body>
-    <h1>User: {{userid}}</h1>
-
-    <h2>Second map generated in view</h2>
-    <h3>Example for different icons in multiple markers with infoboxes</h3>
-    {{sndmap.html}}
-  </body>
-</html> -->
+</html>

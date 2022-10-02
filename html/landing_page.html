@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Search Box Design</title>
-	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+<html>
+  <head>
+	<meta charset="utf-8">
+    <title>Ambulance Tracker</title>
+    <style>
+      body {
+        background-size: 1500px 850px;
+      }
+      form {
+        width: 300px;
+        margin: auto;
+        margin-top: 420px;
+      }
+      input {
+        padding: 4px 10px;
+        border: 0;
+        font-size: 16px;
+      }
+      .search {
+        width: 100%;
+      }
+      .submit {
+        width: 70px;
+        background-color: #1c87c9;
+        color: #885858;
+      }
+    </style>
 
+<<<<<<< HEAD
+  </head>
+  <body background={{url_for('static', filename = 'AmbTracker.jpg')}}>
+		<form action="{{ url_for('mapredir', id="feabrea")}}" method="POST">
+			<input type="text" class="input" name="userid"
+			placeholder="Enter your ambulance code">
+			<input type="submit" class="searchbtn" value="submit"><i class="fas fa-search"></i></div></div>
+		</form>
+    
+  </body>
+</html>
+=======
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 </head>
 <body>
@@ -25,3 +59,4 @@
 
 </body>
 </html>
+>>>>>>> bdfd4fb77c85a70e4b3bb36de637ea83db353b7a
